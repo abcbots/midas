@@ -1,0 +1,4 @@
+<%% title @current.<%= obj_after_to %>name %>
+<%% sub_title "Edit <%= obj_after_to.camelize %>" %>
+<%%= render 'form' %>
+<%%= render :partial => @current, :locals => {:pass => "show index" } %>

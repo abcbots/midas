@@ -1,0 +1,117 @@
+
+class OgoGenerator < Rails::Generators::Base
+  source_root File.expand_path('../templates', __FILE__)
+  argument :obj_before_from, :type => :string, :desc => "optional"
+  argument :obj_before_to, :type => :string, :desc => "optional"
+  argument :direction, :type => :string, :desc => "optional"
+  argument :obj_after_from, :type => :string, :desc => "optional"
+  argument :obj_after_to, :type => :string, :desc => "optional"
+  argument :conv_lev, :type => :string, :default => "unique", :desc => "optional"
+
+  direction = direction.to_s.downcase.singularize
+  obj_before_from = obj_before_from.to_s.downcase.singularize
+  obj_before_to = obj_before_to.to_s.downcase.singularize
+  obj_after_from = obj_after_from.to_s.downcase.singularize
+  obj_after_to = obj_after_to.to_s.downcase.singularize
+  conv_lev = conv_lev.to_s.downcase.singularize
+
+  def push_obj
+    if direction=="push"
+      #generate_object obj_after_to
+      push_templates
+    end
+  end
+
+  def pull_obj
+    if direction=="pull"
+      pull_templates
+    end
+  end
+
+private
+
+  def generate_object(pass_obj)
+    run "rails g nifty:scaffold #{pass_obj} #{pass_obj}name:string -f --rspec"
+    run "rake db:migrate"
+    run "rake db:test:clone"
+  end
+ 
+  def get_folder_name(pass_when="needs_name")
+    if pass_when=="after"
+      if obj_after_from != obj_after_to
+        r = "#{obj_after_from}_#{obj_after_to}"
+      elsif obj_after_from == obj_after_to
+        r = "#{obj_after_to}"
+      end
+    elsif pass_when=="before"
+      if obj_before_from != obj_before_to
+        r = "#{obj_before_from}_#{obj_before_to}"
+      elsif obj_before_from == obj_before_to
+        r = "#{obj_before_to}"
+      end
+    end
+    return r
+  end
+ 
+  def git(commit_message="")
+    commit_message = commit_message + ": " + Time.now.to_s + "."
+    run "git add ."
+    run "git commit -m '#{commit_message}'"
+    print "\n  #{commit_message}\n\n"
+  end
+
+  def pull_templates
+      templateize_file "app/helpers/#{obj_before_to.pluralize}_helper.rb", "objto/app/helpers/objtos_helper.rb"
+      templateize_file "app/views/#{obj_before_to.pluralize}/_form.html.erb", "objto/app/views/objtos/_form.html.erb"
+      templateize_file "app/views/#{obj_before_to.pluralize}/_index.html.erb", "objto/app/views/objtos/_index.html.erb"
+      templateize_file "app/views/#{obj_before_to.pluralize}/_#{obj_before_to}.html.erb", "objto/app/views/objtos/_objto.html.erb"
+      templateize_file "features/app/#{obj_before_to.pluralize}/create.feature", "objto/features/app/objtos/create.feature"
+      templateize_file "features/app/#{obj_before_to.pluralize}/destroy.feature", "objto/features/app/objtos/destroy.feature"
+      templateize_file "features/app/#{obj_before_to.pluralize}/read.feature", "objto/features/app/objtos/read.feature"
+      templateize_file "features/app/#{obj_before_to.pluralize}/update.feature", "objto/features/app/objtos/update.feature"
+      templateize_file "features/step_definitions/#{obj_before_to}_steps.rb", "objto/features/step_definitions/objto_steps.rb"
+    if conv_lev == "core"
+      templateize_file "app/models/#{obj_before_to}.rb", "objto/app/models/objto.rb", conv_lev
+      templateize_file "app/controllers/#{obj_before_to.pluralize}_controller.rb", "objto/app/controllers/objtos_controller.rb", conv_lev
+      templateize_file "app/views/#{obj_before_to.pluralize}/edit.html.erb", "objto/app/views/objtos/edit.html.erb", conv_lev
+      templateize_file "app/views/#{obj_before_to.pluralize}/index.html.erb", "objto/app/views/objtos/index.html.erb", conv_lev
+      templateize_file "app/views/#{obj_before_to.pluralize}/new.html.erb", "objto/app/views/objtos/new.html.erb", conv_lev
+      templateize_file "app/views/#{obj_before_to.pluralize}/show.html.erb", "objto/app/views/objtos/show.html.erb", conv_lev
+    end
+  end
+
+  def push_templates
+    folder_name = get_folder_name "before"
+    template "core/objto/app/helpers/objtos_helper.rb", "app/helpers/#{obj_after_to.pluralize}_helper.rb", :force => true
+    template "core/objto/app/views/objtos/_form.html.erb", "app/views/#{obj_after_to.pluralize}/_form.html.erb", :force => true
+    template "core/objto/app/views/objtos/_index.html.erb", "app/views/#{obj_after_to.pluralize}/_index.html.erb", :force => true
+    template "core/objto/app/views/objtos/_objto.html.erb", "app/views/#{obj_after_to.pluralize}/_#{obj_after_to}.html.erb", :force => true
+    template "core/objto/features/app/objtos/create.feature", "features/app/#{obj_after_to.pluralize}/create.feature", :force => true
+    template "core/objto/features/app/objtos/destroy.feature", "features/app/#{obj_after_to.pluralize}/destroy.feature", :force => true
+    template "core/objto/features/app/objtos/read.feature", "features/app/#{obj_after_to.pluralize}/read.feature", :force => true
+    template "core/objto/features/app/objtos/update.feature", "features/app/#{obj_after_to.pluralize}/update.feature", :force => true
+    template "core/objto/features/step_definitions/objto_steps.rb", "features/step_definitions/#{obj_after_to}_steps.rb", :force => true
+    template "#{folder_name}/objto/app/controllers/objtos_controller.rb", "app/controllers/#{obj_after_to.pluralize}_controller.rb", :force => true
+    template "#{folder_name}/objto/app/models/objto.rb", "app/models/#{obj_after_to}.rb", :force => true
+    template "#{folder_name}/objto/app/views/objtos/edit.html.erb", "app/views/#{obj_after_to.pluralize}/edit.html.erb", :force => true
+    template "#{folder_name}/objto/app/views/objtos/index.html.erb", "app/views/#{obj_after_to.pluralize}/index.html.erb", :force => true
+    template "#{folder_name}/objto/app/views/objtos/new.html.erb", "app/views/#{obj_after_to.pluralize}/new.html.erb", :force => true
+    template "#{folder_name}/objto/app/views/objtos/show.html.erb", "app/views/#{obj_after_to.pluralize}/show.html.erb", :force => true
+  end
+
+  def templateize_file(pass_out, pass_in, pass_conv_lev="")
+    if pass_conv_lev==""
+      folder_name = get_folder_name "after"
+    elsif pass_conv_lev=="core"
+      folder_name = "core"
+    end
+    pass_in = "lib/generators/ogo/templates/#{folder_name}/#{pass_in}".to_s
+    copy_file "../../../../#{pass_out}", pass_in, :force => true
+    gsub_file pass_in, "<%", "<%%", :force => true
+    gsub_file pass_in, obj_before_to.pluralize, "<%= obj_after_to.pluralize %>", :force => true
+    gsub_file pass_in, obj_before_to, "<%= obj_after_to %>", :force => true
+    gsub_file pass_in, obj_before_to.camelize.pluralize, "<%= obj_after_to.camelize.pluralize %>", :force => true
+    gsub_file pass_in, obj_before_to.camelize, "<%= obj_after_to.camelize %>", :force => true
+  end
+
+end

@@ -1,0 +1,8 @@
+<%%= form_for @current do |f| %>
+  <%%= f.error_messages %>
+  <p>
+    <%%= f.label :<%= obj_after_to %>name %><br />
+    <%%= f.text_field :<%= obj_after_to %>name %>
+  </p>
+  <p><%%= f.submit %></p>
+<%% end %>

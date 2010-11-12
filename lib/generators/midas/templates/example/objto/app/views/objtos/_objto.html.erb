@@ -1,0 +1,29 @@
+<%% if pass.include? "show" %>
+  <%% para = "&nbsp;" %>
+<%% else %>
+  <%% para = "<p>" %>
+<%% end %>
+
+<%% divide ||= "<p>" %>
+
+<%% if pass.include? "show" %>
+  <%%= raw(divide) %>
+  <%%= link_to_unless_current <%= obj_after_to %>.<%= obj_after_to %>name||<%= obj_after_to %>.id, <%= obj_after_to %> %>
+<%% end %>
+<%% if pass.include? "create_poly" %>
+  <%%= raw(para) %>
+  <%%= raw(poly<%= obj_after_to.pluralize %>_helper_link_new(<%= obj_after_to %>, Poly)) %>
+<%% end %>
+<%% if pass.include? "destroy" %>
+  <%%= raw(para) %>
+  <%%= link_to "destroy", <%= obj_after_to %>, :confirm => 'Are you sure?', :method => :delete %>
+<%% end %>
+<%% if pass.include? "edit" %>
+  <%%= raw(para) %>
+  <%%= link_to "edit", edit_<%= obj_after_to %>_path(<%= obj_after_to %>) %>
+<%% end %>
+<%% if pass.include? "index" %>
+  <%%= raw(para) %>
+  <%%= link_to "index", <%= obj_after_to.pluralize %>_path %>
+<%% end %>
+

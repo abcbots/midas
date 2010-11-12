@@ -1,0 +1,4 @@
+<%% title "Index" %>
+<%% sub_title "<%= obj_after_to.camelize.pluralize %>" %>
+<ul><%%= render :partial => @currents, :locals => {:pass => "show", :divide => "<li>" } %></ul>
+<p><%%= link_to "create new <%= obj_after_to.camelize %>", new_<%= obj_after_to %>_path %></p>

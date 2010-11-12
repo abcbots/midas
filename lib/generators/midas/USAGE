@@ -1,0 +1,12 @@
+Description:
+
+rails g <push_or_pull> <model_from> <model_to>
+
+  Example: rails push user group
+
+    Will create a fully-loaded group resource, and nest it in the user resource.
+
+  Example: rails pull user group
+
+    Will attempt to pull all resources for a current group resource, and the nesting package in the user resource.
+
