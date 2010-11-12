@@ -1,0 +1,64 @@
+PRINCE MIDAS, SON OF KING MIDAS
+
+The story...
+
+After the episode of King Midas, and his unsustainable power, to turn all
+he touched into gold---appearently, even food was being turned into gold before
+the King could taste or eat it---the reality of starvation caused King Midas to
+seek reversal of this power, and the power was thankfully reversed. King Midas 
+had a son: Prince Midas, and Prince Midas was gifted the same chance to have 
+the same power, but he initially refused.
+
+Prince Midas refused the "golden-touch" and demanded that it be halfed 
+with the power to change gold into anything else, including food and all the rest. 
+This demand was granted, but only under the following condition: Prince 
+Midas would have to reincarnate into the spirit of a machine not yet imagined, 
+in a universe not yet created, and this would not happen for 10 thousand years!
+Prince Midas agreed.
+
+Long story, short: 10 thousand years has passed. Meet Prince Midas:
+
+USAGE
+
+Terminal:
+
+To install into a Rails 3 app:
+
+$ rails g plugin:install https://github.com/babybird/midas.git
+
+To liquidate a generic resource, for the purpose of re-purposing:
+
+$ rails g midas <resource> pull gold
+
+To generate a resource:
+
+$ rails g midas gold push <resource>
+
+To liquidate a specific resource, for the purpose of re-purposing:
+
+$ rails g midas <resource_old> pull <resource_new>
+
+To generate a specific resource, and nest it in another resource:
+
+$ rails g midas <resource_gold> push <resource_first> <resource_second>
+
+
+Copyright (c) 2010 DAVE MAKENA (DRAGONBIRD)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
